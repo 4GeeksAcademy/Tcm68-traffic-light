@@ -1,26 +1,60 @@
-import React from "react";
+import React, { useState } from 'react';
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+const TrafficLight = () => {
+  const [color, setColor] = useState('red');
+  const [showPurple, setShowPurple] = useState(false);
 
-//create your first component
-const Home = () => {
-	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+  const handleClick = (selectedColor) => {
+    if (selectedColor === 'purple') {
+      setShowPurple(true);
+    } else {
+      setColor(selectedColor);
+      setShowPurple(false);
+    }
+  };
+
+  const cycleColors = () => {
+    switch (color) {
+      case 'red':
+        setColor('green');
+        setShowPurple(false);
+        break;
+      case 'green':
+        setColor('yellow');
+        setShowPurple(false);
+        break;
+      case 'yellow':
+        setColor('red');
+        setShowPurple(false);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const addPurpleColor = () => {
+    if (!showPurple) {
+      setShowPurple(true);
+    }
+  };
+
+  return (
+    <div className="traffic-light">
+      <div className="container">
+        <div className={`light red-light ${color === 'red' ? 'glow' : ''}`} onClick={() => handleClick('red')} />
+        {!showPurple && (
+          <div className={`light yellow-light ${color === 'yellow' ? 'glow' : ''}`} onClick={() => handleClick('yellow')} />
+        )}
+        {showPurple && <div className="light purple-light glow" onClick={() => handleClick('purple')} />}
+        <div className={`light green-light ${color === 'green' ? 'glow' : ''}`} onClick={() => handleClick('green')} />
+      </div>
+
+      <div className="button-container">
+        <button onClick={cycleColors}>Cycle Colors</button>
+        <button onClick={addPurpleColor}>Add Purple Color</button>
+      </div>
+    </div>
+  );
 };
 
-export default Home;
+export default TrafficLight;
